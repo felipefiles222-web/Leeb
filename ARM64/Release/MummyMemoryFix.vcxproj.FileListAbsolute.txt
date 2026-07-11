@@ -1,0 +1,2 @@
+C:\MummyMemoryFix3\MummyMemoryFix\ARM64\Release\libFga721.so
+C:\Leeb-main\Leeb-main\ARM64\Release\libFga721.so

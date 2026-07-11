@@ -1,0 +1,23 @@
+﻿  ANDROID_HOME=C:\Program Files (x86)\Android\android-sdk
+  ANDROID_SDK_ROOT=C:\Program Files (x86)\Android\android-sdk
+  ANT_HOME=
+  JAVA_HOME=C:\Program Files\Android\jdk\jdk-8.0.302.8-hotspot\jdk8u302-b08
+  NDK_ROOT=C:\Program Files (x86)\Android\AndroidNDK\android-ndk-r23c
+  pch.h
+  And64InlineHook.cpp
+  MummyMemoryFix.cpp
+  In file included from MummyMemoryFix.cpp:1:
+  In file included from C:\Leeb-main\Leeb-main\/PvZ2/Zombie_TombRaiser.h:2:
+C:\Leeb-main\Leeb-main\PvZ2/Zombie.h(212,43): warning : non-void function does not return a value [-Wreturn-type]
+          virtual Sexy::SexyVector3 Function198() {} // get some offset of the zombie's position
+                                                   ^
+  1 warning generated.
+  memUtils.cpp
+  Zombie_TombRaiser.cpp
+  In file included from PvZ2\Zombie_TombRaiser.cpp:2:
+  In file included from C:\Leeb-main\Leeb-main\PvZ2/Zombie_TombRaiser.h:2:
+C:\Leeb-main\Leeb-main\PvZ2/Zombie.h(212,43): warning : non-void function does not return a value [-Wreturn-type]
+          virtual Sexy::SexyVector3 Function198() {} // get some offset of the zombie's position
+                                                   ^
+  1 warning generated.
+  MummyMemoryFix.vcxproj -> C:\Leeb-main\Leeb-main\ARM64\Release\libFga721.so
