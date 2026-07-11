@@ -1,14 +1,14 @@
 #include "pch.h"
 #include "PvZ2/Zombie_TombRaiser.h"
 #include "PvZ2/Zombie.h"
-#include "PvZ2/Board.h"
 #include "memUtils.h"
 #include "Logging.h"
 
-// Original function pointers for grave spawning and projectile throwing
+// Original function pointers for grave spawning
 typedef void (*TombRaiserSpawnGraveFunc)(Zombie* zombie);
 TombRaiserSpawnGraveFunc oTombRaiserSpawnGrave = nullptr;
 
+// Original function pointer for projectile throwing
 typedef void (*TombRaiserThrowProjectileFunc)(Zombie* zombie, int gridPosX, int gridPosY);
 TombRaiserThrowProjectileFunc oTombRaiserThrowProjectile = nullptr;
 
@@ -40,7 +40,7 @@ void hkZombieTombRaiserSpawnGrave(Zombie* zombie)
 
 	// Apply custom grave spawn logic
 	// Store original position for offset calculations
-	SexyVector2 originalPos = zombie->m_position;
+	Sexy::SexyVector2 originalPos = zombie->m_position;
 	
 	// Apply spawn offsets if defined
 	if (props->GraveSpawnOffsetX != 0.0f || props->GraveSpawnOffsetY != 0.0f) {
@@ -89,16 +89,11 @@ void hkZombieTombRaiserThrowProjectile(Zombie* zombie, int gridPosX, int gridPos
 	}
 }
 
-// Initialize the static reflection function pointer
-Reflection::CRefManualSymbolBuilder::BuildSymbolsFunc ZombieTombRaiserProps::oTombRaiserPropsBuildSymbols = nullptr;
-
 /**
  * Initialize the TombRaiser hook
  * This function is called during mod initialization to set up all hooks
  * 
  * ARM64 Release offsets from IDA Pro:
- * - ZombieTombRaiserProps vtable: 0x23E1128
- * - ZombieTombRaiserProps constructor base: 0x163A068
  * - Grave spawn function: 0xB22EF8
  * - Projectile throw function: 0xB23EB4
  */
@@ -107,10 +102,6 @@ void ZombieTombRaiserProps::modInit()
 	LOGI("========================================");
 	LOGI("Initializing ZombieTombRaiserProps for ARM64 Release");
 	LOGI("========================================");
-
-	// Hook the property sheet constructor (offset 0xB21614)
-	// This is called to initialize the TombRaiser property sheet
-	PVZ2HookFunction(0xB21614, (void*)construct, nullptr);
 
 	// Hook the grave spawning function (offset 0xB22EF8 from IDA)
 	// This is called when the TombRaiser rises from the grave
@@ -121,10 +112,6 @@ void ZombieTombRaiserProps::modInit()
 	// This is called when the TombRaiser throws a bone projectile
 	// Now supports customizable ProjectileType via properties
 	PVZ2HookFunction(0xB23EB4, (void*)hkZombieTombRaiserThrowProjectile, (void**)&oTombRaiserThrowProjectile);
-
-	// Hook buildSymbols to register the new properties with the reflection system
-	// This allows the properties to be read/written from JSON packages
-	PVZ2HookFunction(0xB217C4, (void*)buildSymbols, (void**)&oTombRaiserPropsBuildSymbols);
 
 	LOGI("========================================");
 	LOGI("ZombieTombRaiserProps initialized successfully!");
